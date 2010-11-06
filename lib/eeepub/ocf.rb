@@ -1,3 +1,5 @@
+require 'zippy'
+
 module EeePub
   # Class to create OCF
   class OCF
@@ -41,6 +43,7 @@ module EeePub
         when Hash
           set_values(arg)
         end
+
       end
 
       private
@@ -90,17 +93,19 @@ module EeePub
       output_path = File.expand_path(output_path)
 
       FileUtils.chdir(dir) do
-        File.open('mimetype', 'w') do |f|
-          f << 'application/epub+zip'
-        end
 
         meta_inf = 'META-INF'
         FileUtils.mkdir_p(meta_inf)
 
         container.save(File.join(meta_inf, 'container.xml'))
 
-        %x(zip -X9 \"#{output_path}\" mimetype)
-        %x(zip -Xr9D \"#{output_path}\" * -xi mimetype)
+        Zippy.create output_path do |zip|
+          zip['mimetype'] = 'application/epub+zip'
+          Dir.glob('**/*').each do |filename|
+            zip[filename] = IO.read(filename) unless File.directory?(filename)
+          end
+        end
+ 
       end
     end
   end

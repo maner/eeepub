@@ -11,6 +11,7 @@ begin
     gem.homepage = "http://github.com/jugyo/eeepub"
     gem.authors = ["jugyo"]
     gem.add_dependency "builder"
+    gem.add_dependency "zippy"
     gem.add_development_dependency "rspec"
     gem.add_development_dependency "rr"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
