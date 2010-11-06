@@ -47,7 +47,8 @@ module EeePub
       :files,
       :nav,
       :ncx_file,
-      :opf_file
+      :opf_file,
+      :guide
     ].each do |name|
       define_method(name) do |arg|
         instance_variable_set("@#{name}", arg)
@@ -103,6 +104,7 @@ module EeePub
           :description => @descriptions,
           :rights => @rightss,
           :relation => @relations,
+          :guide=> @guide,
           :manifest => @files.map{|file|
             case file
             when String
